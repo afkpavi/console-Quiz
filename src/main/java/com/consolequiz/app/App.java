@@ -8,39 +8,18 @@ import org.json.simple.*;
 import org.json.simple.parser.*;
 
 public class App {
-    public static void main (String[] args) {
-
-        // Create a  question
-//        Scanner scanner = new Scanner(System.in);
-//
-//        System.out.println("Enter your Question");
-//        String query = scanner.nextLine();
-//
-//        String[] options = new String[4];
-//        for(int i=0;i<options.length;i++){
-//            System.out.println("Enter Option " + (i+1) + " :");
-//            String option = scanner.nextLine();
-//            options[i] = option;
-//        }
-//
-//        System.out.println("Enter the correct answer option(1,2,3,4): ");
-//        int answer = scanner.nextInt();
-//
-//        Question question = new Question(1, query, options, answer);
-//
-//        System.out.println(question.getQuestion());
-//        question.showOptions();
-//
-//        scanner.close();
+    public static void main(String[] args) {
 
         JSONParser jsonParser = new JSONParser();
 
         try {
+            Question[] questions = new Question[2];
             Object obj = jsonParser.parse(new FileReader("src/main/data/questions.json"));
             JSONArray jsonArray = (JSONArray) obj;
 
             Iterator<JSONObject> iterator = jsonArray.iterator();
-            while(iterator.hasNext()){
+            int q = 0;
+            while (iterator.hasNext()) {
                 JSONObject jsonObj = iterator.next();
                 int id = Integer.parseInt(jsonObj.get("id").toString());
                 String query = jsonObj.get("query").toString();
@@ -48,17 +27,34 @@ public class App {
                 String[] options = new String[4];
                 Iterator optionIterator = optionsArr.iterator();
                 int i = 0;
-                while(optionIterator.hasNext()){
+                while (optionIterator.hasNext()) {
                     options[i++] = optionIterator.next().toString();
                 }
                 int answer = Integer.parseInt(jsonObj.get("answer").toString());
                 Question question = new Question(id, query, options, answer);
 
-                System.out.println(question.getQuestion());
+                questions[q++] = question;
 
             }
-        }
-        catch (Exception e) {
+
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Quiz");
+
+            int score = 0;
+            for (int i = 0; i < questions.length; i++) {
+                System.out.println("Question : " + (i + 1));
+                System.out.println(questions[i].getQuestion());
+                System.out.println("Pick 1 Option");
+                questions[i].showOptions();
+                int userAnswer = sc.nextInt();
+                if (questions[i].validateAnswer(userAnswer)) {
+                    score++;
+                }
+            }
+
+            System.out.println("You hvave scored : " + score + " out of " + questions.length);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
