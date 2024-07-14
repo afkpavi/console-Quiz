@@ -1,3 +1,5 @@
+package com.consolequiz.app;
+
 public class Question {
     private int id;
     private String query;

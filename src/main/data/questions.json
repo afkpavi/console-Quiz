@@ -1,0 +1,14 @@
+[
+  {
+  "id": 1,
+  "query": "What File is this?",
+  "options": ["CSV", "XML", "XLS", "JSON"],
+  "answer": 4
+  },
+  {
+    "id": 2,
+    "query": "What File is this?",
+    "options": ["CSV", "XML", "XLS", "JSON"],
+    "answer": 3
+  }
+]
